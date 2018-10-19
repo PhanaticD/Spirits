@@ -2,6 +2,7 @@ package me.xnuminousx.spirits.ability.dark;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -30,6 +31,7 @@ public class Shackle extends DarkAbility implements AddonAbility {
 	private int currPoint;
 	private boolean progress;
 	private long cooldown;
+	private World originWorld;
 
 	public Shackle(Player player) {
 		super(player);
@@ -53,14 +55,12 @@ public class Shackle extends DarkAbility implements AddonAbility {
 		this.location = origin.clone();
 		this.direction = player.getLocation().getDirection();
 		this.progress = true;
+		this.originWorld = player.getWorld();
 	}
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, origin)) {
-			remove();
-			return;
-		}
+		Methods.readGeneralMethods(this, player, originWorld);
 		
 		if ((origin.distanceSquared(location) > range * range) && target == null) {
 			bPlayer.addCooldown(this);

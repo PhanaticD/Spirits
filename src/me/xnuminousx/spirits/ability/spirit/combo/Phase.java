@@ -8,7 +8,6 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.ComboAbility;
 import com.projectkorra.projectkorra.ability.util.ComboManager.AbilityInformation;
@@ -63,11 +62,7 @@ public class Phase extends SpiritAbility implements AddonAbility, ComboAbility {
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || (player.getWorld() != playerWorld) || GeneralMethods.isRegionProtectedFromBuild(this, origin)) {
-			resetGameMode();
-			remove();
-			return;
-		}
+		Methods.readGeneralMethods(this, player, playerWorld);
 		if (player.getHealth() <= minHealth) {
 			remove();
 			return;

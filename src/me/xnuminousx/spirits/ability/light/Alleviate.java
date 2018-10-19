@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -45,6 +46,7 @@ public class Alleviate extends LightAbility implements AddonAbility {
 	private boolean progress;
 	private boolean playingAlleviate;
 	private boolean removeNegPots;
+	private World originWorld;
 
 	public Alleviate(Player player) {
 		super(player);
@@ -80,14 +82,12 @@ public class Alleviate extends LightAbility implements AddonAbility {
 		this.direction = player.getLocation().getDirection();
 		this.progress = true;
 		this.playingAlleviate = false;
+		this.originWorld = player.getWorld();
 	}
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, location)) {
-			remove();
-			return;
-		}
+		Methods.readGeneralMethods(this, player, originWorld);
 		
 		if (!bPlayer.getBoundAbilityName().equals(getName())) {
 			remove();

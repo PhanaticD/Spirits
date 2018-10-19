@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -34,6 +35,7 @@ public class Possess extends SpiritAbility implements AddonAbility {
 	private Vector direction;
 	private Location entityCheck;
 	private Location origin;
+	private World originWorld;
 	
 
 	public Possess(Player player) {
@@ -59,11 +61,13 @@ public class Possess extends SpiritAbility implements AddonAbility {
 		this.entityCheck = origin.clone();
 		this.direction = player.getLocation().getDirection();
 		this.progress = true;
+		this.originWorld = player.getWorld();
 	}
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, player.getLocation()) || origin.distanceSquared(entityCheck) > range * range) {
+		Methods.readGeneralMethods(this, player, originWorld);
+		if (origin.distanceSquared(entityCheck) > range * range) {
 			remove();
 			return;
 		}

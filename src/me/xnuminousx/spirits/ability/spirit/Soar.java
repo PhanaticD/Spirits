@@ -4,10 +4,10 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 
@@ -20,8 +20,8 @@ public class Soar extends SpiritAbility implements AddonAbility {
 	private long time;
 	private long duration;
 	private double speed;
-	private Location location;
 	private long soarCooldown;
+	private World originWorld;
 
 	public Soar(Player player) {
 		super(player);
@@ -38,15 +38,12 @@ public class Soar extends SpiritAbility implements AddonAbility {
 		this.soarCooldown = ConfigManager.getConfig().getLong("Abilities.Spirits.Neutral.Agility.Soar.Cooldown");
 		this.duration = ConfigManager.getConfig().getLong("Abilities.Spirits.Neutral.Agility.Soar.Duration");
 		this.speed = ConfigManager.getConfig().getDouble("Abilities.Spirits.Neutral.Agility.Soar.Speed");
-		this.location = player.getLocation();
+		this.originWorld = player.getWorld();
 	}
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, location)) {
-			remove();
-			return;
-		}
+		Methods.readGeneralMethods(this, player, originWorld);
 		if (bPlayer.isOnCooldown("Soar")) {
 			remove();
 			return;

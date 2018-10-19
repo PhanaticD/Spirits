@@ -2,6 +2,7 @@ package me.xnuminousx.spirits.ability.light;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -50,6 +51,7 @@ public class Shelter extends LightAbility implements AddonAbility {
 	private double selfShield;
 	private boolean removeIfFar;
 	private int removeDistance;
+	private World originWorld;
 
 	public Shelter(Player player, ShelterType shelterType) {
 		super(player);
@@ -82,11 +84,13 @@ public class Shelter extends LightAbility implements AddonAbility {
 		this.direction = player.getLocation().getDirection();
 		this.progress = true;
 		this.isDamaged = false;
+		this.originWorld = player.getWorld();
 	}
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, location) || origin.distanceSquared(location) > range * range) {
+		Methods.readGeneralMethods(this, player, originWorld);
+		if (origin.distanceSquared(location) > range * range) {
 			remove();
 			return;
 		}

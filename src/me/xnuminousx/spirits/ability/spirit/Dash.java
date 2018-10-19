@@ -2,9 +2,9 @@ package me.xnuminousx.spirits.ability.spirit;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 
@@ -16,7 +16,7 @@ public class Dash extends SpiritAbility implements AddonAbility {
 
 	private long dashCooldown;
 	private long distance;
-	private Location location;
+	private World originWorld;
 
 	public Dash(Player player) {
 		super(player);
@@ -31,15 +31,12 @@ public class Dash extends SpiritAbility implements AddonAbility {
 	private void setFields() {
 		this.dashCooldown = ConfigManager.getConfig().getLong("Abilities.Spirits.Neutral.Agility.Dash.Cooldown");
 		this.distance = ConfigManager.getConfig().getLong("Abilities.Spirits.Neutral.Agility.Dash.Distance");
-		this.location = player.getLocation();
+		this.originWorld = player.getWorld();
 	}
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, location)) {
-			remove();
-			return;
-		}
+		Methods.readGeneralMethods(this, player, originWorld);
 		if (bPlayer.isOnCooldown("Dash")) {
 			remove();
 			return;

@@ -1,6 +1,7 @@
 package me.xnuminousx.spirits.ability.light;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -20,8 +21,7 @@ import me.xnuminousx.spirits.Methods.SpiritType;
 import me.xnuminousx.spirits.ability.api.LightAbility;
 
 public class Orb extends LightAbility implements AddonAbility {
-
-	private Location location;
+	
 	private Location targetLoc;
 	private boolean isCharged;
 	private boolean checkEntities;
@@ -40,6 +40,7 @@ public class Orb extends LightAbility implements AddonAbility {
 	private double detonateRange;
 	private double effectRange;
 	private double damage;
+	private World originWorld;
 
 	public Orb(Player player) {
 		super(player);
@@ -65,20 +66,17 @@ public class Orb extends LightAbility implements AddonAbility {
 		this.nauseaDuration = ConfigManager.getConfig().getInt("Abilities.Spirits.LightSpirit.Orb.NauseaDuration");
 		this.potionAmp = ConfigManager.getConfig().getInt("Abilities.Spirits.LightSpirit.Orb.PotionPower");
 		this.requireGround = ConfigManager.getConfig().getBoolean("Abilities.Spirits.LightSpirit.Orb.RequireGround");
-		this.location = player.getLocation();
 		this.isCharged = false;
 		this.checkEntities = false;
 		this.registerOrbLoc = true;
 		this.progressExplosion = false;
 		this.playDormant = false;
+		this.originWorld = player.getWorld();
 	}
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, location)) {
-			remove();
-			return;
-		}
+		Methods.readGeneralMethods(this, player, originWorld);
 		if (!isCharged) {
 			if (player.isSneaking()) {
 				if (System.currentTimeMillis() > time + chargeTime) {

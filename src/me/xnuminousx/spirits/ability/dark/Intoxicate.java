@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -36,6 +37,7 @@ public class Intoxicate extends DarkAbility implements AddonAbility {
 	private long cooldown;
 	private String hexColor;
 	private boolean progress;
+	private World originWorld;
 
 	public Intoxicate(Player player) {
 		super(player);
@@ -60,14 +62,12 @@ public class Intoxicate extends DarkAbility implements AddonAbility {
 		this.location = origin.clone();
 		this.direction = player.getLocation().getDirection();
 		this.progress = true;
+		this.originWorld = player.getWorld();
 	}
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, location)) {
-			remove();
-			return;
-		}
+		Methods.readGeneralMethods(this, player, originWorld);
 		
 		if (!bPlayer.getBoundAbilityName().equals(getName())) {
 			remove();

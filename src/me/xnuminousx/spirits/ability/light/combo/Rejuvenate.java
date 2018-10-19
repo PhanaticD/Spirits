@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
@@ -42,6 +43,7 @@ public class Rejuvenate extends LightAbility implements AddonAbility, ComboAbili
 	private double damage;
 	private int currPoint;
 	private Location location3;
+	private World originWorld;
 
 	public Rejuvenate(Player player) {
 		super(player);
@@ -68,11 +70,13 @@ public class Rejuvenate extends LightAbility implements AddonAbility, ComboAbili
 		location2 = player.getLocation();
 		location3 = player.getLocation();
 		circleCenter = player.getLocation();
+		this.originWorld = player.getWorld();
 	}
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, location) || !bPlayer.canBendIgnoreBindsCooldowns(this)) {
+		Methods.readGeneralMethods(this, player, originWorld);
+		if (!bPlayer.canBendIgnoreBindsCooldowns(this)) {
 			remove();
 			return;
 		}

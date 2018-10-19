@@ -2,6 +2,7 @@ package me.xnuminousx.spirits.ability.dark;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -26,6 +27,7 @@ public class Strike extends DarkAbility implements AddonAbility {
 	private Vector direction;
 	private boolean progress;
 	private double damage;
+	private World originWorld;
 
 	public Strike(Player player) {
 		super(player);
@@ -46,11 +48,13 @@ public class Strike extends DarkAbility implements AddonAbility {
 		this.location = origin.clone();
 		this.direction = player.getLocation().getDirection();
 		this.progress = true;
+		this.originWorld = player.getWorld();
 	}
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, player.getLocation()) || origin.distanceSquared(location) > range * range) {
+		Methods.readGeneralMethods(this, player, originWorld);
+		if (origin.distanceSquared(location) > range * range) {
 			remove();
 			return;
 		}
