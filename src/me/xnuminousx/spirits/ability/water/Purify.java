@@ -156,7 +156,7 @@ public class Purify extends WaterAbility implements AddonAbility {
 			remove();
 			return;
 		}
-		
+
 		if (GeneralMethods.isRegionProtectedFromBuild(this, target.getLocation()) || ((target instanceof Player) && Commands.invincible.contains(((Player) target).getName()))) {
 			remove();
 			return;

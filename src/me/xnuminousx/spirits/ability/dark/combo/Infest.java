@@ -183,7 +183,7 @@ public class Infest extends DarkAbility implements AddonAbility, ComboAbility {
 	
 	@Override
 	public String getInstructions() {
-		return Methods.setSpiritDescriptionColor(SpiritType.DARK) + Main.plugin.getConfig().getString("Langauge.Abilities.DarkSpirit.Infest.Instructions");
+		return Methods.setSpiritDescriptionColor(SpiritType.DARK) + Main.plugin.getConfig().getString("Language.Abilities.DarkSpirit.Infest.Instructions");
 	}
 
 	@Override
