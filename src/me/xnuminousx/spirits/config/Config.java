@@ -209,18 +209,21 @@ public class Config {
 		config.addDefault("Abilities.Spirits.DarkSpirit.Combo.Infest.Damage", 1);
 		config.addDefault("Abilities.Spirits.DarkSpirit.Combo.Infest.DamageEntities", true);
 		config.addDefault("Abilities.Spirits.DarkSpirit.Combo.Infest.HealDarkSpirits", true);
-		
+
 		config.addDefault("Abilities.Spirits.Water.Purify.Enabled", true);
 		config.addDefault("Abilities.Spirits.Water.Purify.Cooldown", 5000);
 		config.addDefault("Abilities.Spirits.Water.Purify.Duration", 20000);
 		config.addDefault("Abilities.Spirits.Water.Purify.Range", 10);
 		config.addDefault("Abilities.Spirits.Water.Purify.SetElement", true);
-		
+		config.addDefault("Abilities.Spirits.Water.Purify.SwitchPercent", 0.33);
+
+		config.addDefault("Abilities.Spirits.Water.Corrupt.Damage", 7);
 		config.addDefault("Abilities.Spirits.Water.Corrupt.Enabled", true);
 		config.addDefault("Abilities.Spirits.Water.Corrupt.Cooldown", 5000);
 		config.addDefault("Abilities.Spirits.Water.Corrupt.Duration", 20000);
 		config.addDefault("Abilities.Spirits.Water.Corrupt.Range", 10);
 		config.addDefault("Abilities.Spirits.Water.Corrupt.SetElement", true);
+		config.addDefault("Abilities.Spirits.Water.Corrupt.SwitchPercent", 0.33);
 		
 		ConfigManager.languageConfig.save();
 		config.options().copyDefaults(true);

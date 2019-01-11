@@ -4,8 +4,9 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import com.projectkorra.projectkorra.event.PlayerChangeElementEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -32,48 +33,47 @@ public class Corrupt extends WaterAbility implements AddonAbility {
 	public LivingEntity target;
 	private double range;
 	public static Set<Integer> heldEntities = new HashSet<Integer>();
-	public byte stage = 0;
-	public Location travelLoc = null;
 	private long duration;
-	public double yaw;
-	public Random random;
 	private long cooldown;
+	private long damage;
 	private boolean hasReached = true;
 	private int ticks;
 	private int chargeTicks;
-	private long time;
-	private boolean charged = false;
+	private long starttime;
+	private boolean targetfroze = false;
 	private boolean setElement;
+	private MovementHandler mh;
+	private double switchpercent;
 
 	public Corrupt(Player player) {
 		super(player);
 		if (!bPlayer.canBend(this)) {
 			return;
 		}
-		firstloop: for (int i = 20; i < 100; i++) {
-			Location loc = GeneralMethods.getTargetedLocation(player, range);
-			for (Entity e : GeneralMethods.getEntitiesAroundPoint(loc, 10)) {
-				if (e instanceof LivingEntity && e.getEntityId() != player.getEntityId()) {
-					target = (LivingEntity) e;
-					break firstloop;
-				}
-			}
+		setFields();
+
+		Entity e = GeneralMethods.getTargetedEntity(player, range);
+		if (e instanceof LivingEntity && e.getEntityId() != player.getEntityId()) {
+			target = (LivingEntity) e;
 		}
-		time = System.currentTimeMillis();
+		starttime = System.currentTimeMillis();
 		
 		if (target == null) {
 			return;
 		}
+		mh = new MovementHandler(target, this);
 		heldEntities.add(target.getEntityId());
-		setFields();
+
 		start();
 	}
 	
 	private void setFields() {
+		this.damage = Main.plugin.getConfig().getLong("Abilities.Spirits.Water.Corrupt.Damage");
 		this.cooldown = Main.plugin.getConfig().getLong("Abilities.Spirits.Water.Corrupt.Cooldown");
 		this.duration = Main.plugin.getConfig().getLong("Abilities.Spirits.Water.Corrupt.Duration");
 		this.range = Main.plugin.getConfig().getDouble("Abilities.Spirits.Water.Corrupt.Range");
 		this.setElement = Main.plugin.getConfig().getBoolean("Abilities.Spirits.Water.Corrupt.SetElement");
+		this.switchpercent = Main.plugin.getConfig().getDouble("Abilities.Spirits.Water.Corrupt.SwitchPercent");
 	}
 
 	public double calculateSize(LivingEntity entity) {
@@ -136,97 +136,85 @@ public class Corrupt extends WaterAbility implements AddonAbility {
 			return;
 		}
 		
-		
 		if (!target.getWorld().equals(player.getWorld())) {
 			remove();
 			return;
 		}
 		
-		if (target.getLocation().distance(player.getLocation()) > 25) {
-			
+		if (target.getLocation().distance(player.getLocation()) > range) {
+			remove();
+			return;
+		}
+		if (!player.isSneaking()) {
+			bPlayer.addCooldown(this);
+			remove();
+			return;
+		}
+
+		Entity e = GeneralMethods.getTargetedEntity(player, range);
+		if (!(e instanceof LivingEntity) || e.getEntityId() != target.getEntityId()) {
+			bPlayer.addCooldown(this);
 			remove();
 			return;
 		}
 		
-		if (System.currentTimeMillis() - time > 10000L) {
-			MovementHandler mh = new MovementHandler((Player) player, this);
-			mh.stop(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "" + ChatColor.UNDERLINE + "* READY *");
-			charged = true;
+		if (System.currentTimeMillis() - starttime > (duration - (switchpercent * duration))) {
 			createNewSpirals();
+
+			paralyze(target);
+		} else {
+			createSpirals();
 		}
 		
-		if (System.currentTimeMillis() - time > duration) {
+		if (System.currentTimeMillis() - starttime > duration) {
+			finish();
 			remove();
 			bPlayer.addCooldown(this);
 			return;
 		}
-		
-		if (charged) {
-			if (!player.isSneaking()) {
-				if (target instanceof OfflinePlayer && setElement) {
-					BendingPlayer bPlayer = BendingPlayer.getBendingPlayer((OfflinePlayer) target);
-					if (bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT)) {
-						bPlayer.addElement(SpiritElement.DARK_SPIRIT);
-						bPlayer.getElements().remove(SpiritElement.LIGHT_SPIRIT);
-						GeneralMethods.saveElements(bPlayer);
-						target.sendMessage(SpiritElement.LIGHT_SPIRIT.getColor() + "You are now a" + ChatColor.BOLD + "" + ChatColor.BLUE + " DarkSpirit");
-						ParticleEffect.SPELL_WITCH.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.0F);
-					} else {
-						DamageHandler.damageEntity(target, 7, this);
-						target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 300, 2));
-						ParticleEffect.SPELL_WITCH.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.0F);
-					}
-				} else if (target instanceof Entity || target instanceof LivingEntity) {
-					DamageHandler.damageEntity(target, 7, this);
-					target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 300, 2));
-					ParticleEffect.SPELL_WITCH.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.0F);
-				}
+
+		ticks++;
+		Long chargingTime = System.currentTimeMillis() - getStartTime();
+		this.chargeTicks = (int) (chargingTime / 25);
+
+	}
+
+	private void finish() {
+		if (target instanceof Player && setElement) {
+			BendingPlayer bPlayer = BendingPlayer.getBendingPlayer((Player) target);
+			if (bPlayer.hasElement(SpiritElement.LIGHT_SPIRIT)) {
+				bPlayer.getElements().set(bPlayer.getElements().indexOf(SpiritElement.LIGHT_SPIRIT), SpiritElement.DARK_SPIRIT);
+				GeneralMethods.saveElements(bPlayer);
+				Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent(player, (Player)target, SpiritElement.DARK_SPIRIT, PlayerChangeElementEvent.Result.CHOOSE));
+				target.sendMessage(SpiritElement.LIGHT_SPIRIT.getColor() + "You are now a" + ChatColor.BOLD + "" + ChatColor.BLUE + " DarkSpirit");
+				ParticleEffect.SPELL_WITCH.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.1F);
+			} else {
+				DamageHandler.damageEntity(target, damage, this);
+				target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 300, 2));
+				ParticleEffect.SPELL_WITCH.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.1F);
 			}
+		} else {
+			DamageHandler.damageEntity(target, damage, this);
+			target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 300, 2));
+			ParticleEffect.SPELL_WITCH.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.1F);
 		}
-		
-		if (stage == 0) {
-			
-			if (!player.isSneaking()) {
-				bPlayer.addCooldown(this);
-				remove();
-				return;
-			}
-			
-			if (travelLoc == null && this.getStartTime() + duration < System.currentTimeMillis()) {
-				bPlayer.addCooldown(this);
-				travelLoc = player.getEyeLocation();
-			} else if (travelLoc == null) {
-				ticks++;
-				Long chargingTime = System.currentTimeMillis() - getStartTime();
-				this.chargeTicks = (int) (chargingTime / 25);
-				if (!charged) {
-					createSpirals();
-				} else {
-					createNewSpirals();
-				}
-				//ParticleEffect.MAGIC_CRIT.display(0.3F, 0.3F, 0.3F, 0.1F, 8, target.getLocation().clone().add(0, 0.8, 0), 90);
-				//f7f2f6
-				for (int i = -180; i < 180; i += 10) {
-					target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 300, 128));
-					target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 300, 128));
-				}
-				return;
-			}
-		}
+		mh.reset();
 	}
 	
-	public void paralyze(Entity entity) {
-		if (entity instanceof Creature) {
-			((Creature) entity).setTarget(null);
-		}
-		
-		if (entity instanceof Player) {
-			if (Suffocate.isChannelingSphere((Player) entity)) {
-				Suffocate.remove((Player) entity);
+	public void paralyze(LivingEntity entity) {
+		if (!targetfroze) {
+			if (entity instanceof Creature) {
+				((Creature) entity).setTarget(null);
 			}
-		} 
-		MovementHandler mh = new MovementHandler((LivingEntity) entity, this);
-		mh.stop(ChatColor.DARK_PURPLE + "* CORRUPTING *");
+
+			if (entity instanceof Player) {
+				if (Suffocate.isChannelingSphere((Player) entity)) {
+					Suffocate.remove((Player) entity);
+				}
+			}
+			mh.stop(ChatColor.DARK_PURPLE + "* CORRUPTING *");
+			targetfroze = true;
+		}
 	}
 	
 	private void createSpirals() {
