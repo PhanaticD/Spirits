@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -154,6 +155,11 @@ public class Corrupt extends WaterAbility implements AddonAbility {
 		Entity e = GeneralMethods.getTargetedEntity(player, range);
 		if (!(e instanceof LivingEntity) || e.getEntityId() != target.getEntityId()) {
 			bPlayer.addCooldown(this);
+			remove();
+			return;
+		}
+
+		if (GeneralMethods.isRegionProtectedFromBuild(this, target.getLocation()) || ((target instanceof Player) && Commands.invincible.contains(((Player) target).getName()))) {
 			remove();
 			return;
 		}
