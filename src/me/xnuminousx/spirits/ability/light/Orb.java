@@ -115,7 +115,7 @@ public class Orb extends LightAbility implements AddonAbility {
 			progressExplosion = false;
 			ParticleEffect.ENCHANTMENT_TABLE.display(location, 3, 1, 3, 0, 1);
 			ParticleEffect.END_ROD.display(location, 0, 0, 0, 0, 2);
-			ParticleEffect.MAGIC_CRIT.display(location, 0.2F, 0.2F, 0.2F, 0, 3);
+			ParticleEffect.CRIT_MAGIC.display(location, 3, 0.2F, 0.2F, 0.2F, 0);
 			if (player.isSneaking() && hasOrb()) {
 				progressExplosion = true;
 				playDormant = false;
@@ -142,7 +142,7 @@ public class Orb extends LightAbility implements AddonAbility {
 			}
 		}
 		if (progressExplosion) {
-			ParticleEffect.FIREWORKS_SPARK.display(targetLoc, 0.2F, 0.2F, 0.2F, 0.5F, 50);
+			ParticleEffect.FIREWORKS_SPARK.display(targetLoc, 50, 0.2F, 0.2F, 0.2F, 0.5F);
 			ParticleEffect.END_ROD.display(targetLoc, 2, 3, 2, 0, 30);
 			for (Entity entity : GeneralMethods.getEntitiesAroundPoint(targetLoc, effectRange)) {
 				if (entity instanceof LivingEntity && entity.getUniqueId() != player.getUniqueId()) {

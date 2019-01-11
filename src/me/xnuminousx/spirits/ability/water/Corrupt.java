@@ -170,16 +170,16 @@ public class Corrupt extends WaterAbility implements AddonAbility {
 						bPlayer.getElements().remove(SpiritElement.LIGHT_SPIRIT);
 						GeneralMethods.saveElements(bPlayer);
 						target.sendMessage(SpiritElement.LIGHT_SPIRIT.getColor() + "You are now a" + ChatColor.BOLD + "" + ChatColor.BLUE + " DarkSpirit");
-						ParticleEffect.WITCH_MAGIC.display(target.getLocation(), (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.0F, 3);
+						ParticleEffect.SPELL_WITCH.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.0F);
 					} else {
 						DamageHandler.damageEntity(target, 7, this);
 						target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 300, 2));
-						ParticleEffect.WITCH_MAGIC.display(target.getLocation(), (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.0F, 3);
+						ParticleEffect.SPELL_WITCH.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.0F);
 					}
 				} else if (target instanceof Entity || target instanceof LivingEntity) {
 					DamageHandler.damageEntity(target, 7, this);
 					target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 300, 2));
-					ParticleEffect.WITCH_MAGIC.display(target.getLocation(), (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.0F, 3);
+					ParticleEffect.SPELL_WITCH.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.0F);
 				}
 			}
 		}

@@ -77,8 +77,8 @@ public class Fuse extends SpiritAbility implements AddonAbility, ComboAbility {
 		}
 		dash();
 		if (System.currentTimeMillis() > time + maxDuration) {
-			ParticleEffect.FIREWORKS_SPARK.display(player.getLocation(), 0.5F, 0.5F, 0.5F, 0.5F, 20);
-			ParticleEffect.DRAGON_BREATH.display(player.getLocation(), 0.5F, 0.5F, 0.5F, 1F, 20);
+			ParticleEffect.FIREWORKS_SPARK.display(player.getLocation(), 20, 0.5F, 0.5F, 0.5F, 0.5F);
+			ParticleEffect.DRAGON_BREATH.display(player.getLocation(), 20, 0.5F, 0.5F, 0.5F, 1F);
 			if (target instanceof Player && killAfterDuration) {
 				DamageHandler.damageEntity(target, 30, this);
 			}
