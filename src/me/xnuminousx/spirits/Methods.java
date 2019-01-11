@@ -39,7 +39,7 @@ public class Methods {
 			  double x = radius * Math.cos(angle);
 			  double z = radius * Math.sin(angle);
 			  location.add(x, height, z);
-			  particleEffect.display(location, 0, 0, 0, 0, 1);
+			  particleEffect.display(location, 1, 0, 0, 0, 0);
 			  location.subtract(x, height, z);
 			}
 	}
@@ -66,7 +66,7 @@ public class Methods {
 			double x = radius * Math.cos(angle);
 			double z = radius * Math.sin(angle);
 			location.add(x, height, z);
-			particleEffect.display(location, 0, 0, 0, 0, 1);
+			particleEffect.display(location,1,0, 0, 0, 0);
 			location.subtract(x, height, z);
 		}
 	}

@@ -248,12 +248,13 @@ public class Purify extends WaterAbility implements AddonAbility {
 			double x2 = Math.cos(Math.toRadians(angle2)) * distanceFromPlayer;
 			double z2 = Math.sin(Math.toRadians(angle2)) * distanceFromPlayer;
 			Location displayLoc2 = target.getLocation().clone().add(x2, height, z2);
-			GeneralMethods.displayColoredParticle(displayLoc2, "42aaf4", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc, "42aaf4", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc2, "70ddff", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc, "70ddff", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc2, ParticleEffect.MOB_SPELL, "42aaf4", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc, ParticleEffect.MOB_SPELL, "42aaf4", 0, 0, 0);
+			GeneralMethods.displayColoredParticle("42aaf4", displayLoc2);
+			GeneralMethods.displayColoredParticle("42aaf4", displayLoc);
+			GeneralMethods.displayColoredParticle("70ddff", displayLoc2);
+			GeneralMethods.displayColoredParticle("70ddff", displayLoc);
+			//todo: check here too
+			ParticleEffect.SPELL_MOB.display(displayLoc2, 0, 66 / 255D, 170 / 255D, 244 / 255D, 1);
+			ParticleEffect.SPELL_MOB.display(displayLoc, 0, 66 / 255D, 170 / 255D, 244 / 255D, 1);
 		}
 	}
 	
@@ -273,10 +274,10 @@ public class Purify extends WaterAbility implements AddonAbility {
 			double x2 = Math.cos(Math.toRadians(angle2)) * distanceFromPlayer;
 			double z2 = Math.sin(Math.toRadians(angle2)) * distanceFromPlayer;
 			Location displayLoc2 = target.getLocation().clone().add(x2, height, z2);
-			GeneralMethods.displayColoredParticle(displayLoc2, "faff9b", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc, "faff9b", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc2, "f6ff5e", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc, "f6ff5e", 0, 0, 0);
+			GeneralMethods.displayColoredParticle("faff9b", displayLoc2);
+			GeneralMethods.displayColoredParticle("faff9b", displayLoc);
+			GeneralMethods.displayColoredParticle("f6ff5e", displayLoc2);
+			GeneralMethods.displayColoredParticle("f6ff5e", displayLoc);
 		}
 	}
 

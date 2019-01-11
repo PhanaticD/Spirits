@@ -61,7 +61,7 @@ public class Strike extends DarkAbility implements AddonAbility {
 	public void strike() {
 		if (progress) {
 			location.add(direction.multiply(1));
-			ParticleEffect.CRIT.display(location, 0, 0, 0, 0, 1);
+			ParticleEffect.CRIT.display(location,1);
 		}
 		
 		for (Entity target : GeneralMethods.getEntitiesAroundPoint(location, 1.5)) {

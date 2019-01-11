@@ -124,7 +124,7 @@ public class Fuse extends SpiritAbility implements AddonAbility, ComboAbility {
 			if (System.currentTimeMillis() > time + dangerDelay) {
 				if (new Random().nextInt(10) == 0) {
 					DamageHandler.damageEntity(target, 1, this);
-					ParticleEffect.MAGIC_CRIT.display(target.getLocation().add(0, 1, 0), 0, 0, 0, 0.2F, 10);
+					ParticleEffect.CRIT_MAGIC.display(target.getLocation().add(0, 1, 0), 10, 0, 0, 0, 0.2F);
 				}
 			}
 		} else if (target instanceof LivingEntity) {
@@ -136,7 +136,7 @@ public class Fuse extends SpiritAbility implements AddonAbility, ComboAbility {
 			if (System.currentTimeMillis() > time + dangerDelay) {
 				if (new Random().nextInt(10) == 0) {
 					DamageHandler.damageEntity(target, 1, this);
-					ParticleEffect.MAGIC_CRIT.display(target.getLocation().add(0, 1, 0), 0, 0, 0, 0.2F, 10);
+					ParticleEffect.CRIT_MAGIC.display(target.getLocation().add(0, 1, 0), 10, 0, 0, 0, 0.2F);
 				}
 			}
 			LivingEntity le = (LivingEntity)target;

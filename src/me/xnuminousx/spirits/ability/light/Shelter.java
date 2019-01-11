@@ -204,7 +204,7 @@ public class Shelter extends LightAbility implements AddonAbility {
 			double x = size * (Math.PI * 4 - angle) * Math.cos(angle + i);
             double z = size * (Math.PI * 4 - angle) * Math.sin(angle + i);
 			location.add(x, 0.1F, z);
-			ParticleEffect.INSTANT_SPELL.display(location, 0, 0, 0, 0, 1);
+			ParticleEffect.SPELL_INSTANT.display(location, 1, 0, 0, 0, 0);
 			location.subtract(x, 0.1F, z);
 		}
 	}

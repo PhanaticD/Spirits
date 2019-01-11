@@ -245,12 +245,13 @@ public class Corrupt extends WaterAbility implements AddonAbility {
 			double x2 = Math.cos(Math.toRadians(angle2)) * distanceFromPlayer;
 			double z2 = Math.sin(Math.toRadians(angle2)) * distanceFromPlayer;
 			Location displayLoc2 = target.getLocation().clone().add(x2, height, z2);
-			GeneralMethods.displayColoredParticle(displayLoc2, "42aaf4", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc, "42aaf4", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc2, "70ddff", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc, "70ddff", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc2, ParticleEffect.MOB_SPELL, "42aaf4", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc, ParticleEffect.MOB_SPELL, "42aaf4", 0, 0, 0);
+			GeneralMethods.displayColoredParticle("42aaf4", displayLoc2);
+			GeneralMethods.displayColoredParticle("42aaf4", displayLoc);
+			GeneralMethods.displayColoredParticle("70ddff", displayLoc2);
+			GeneralMethods.displayColoredParticle("70ddff", displayLoc);
+			//todo: check if this is even right
+			ParticleEffect.SPELL_MOB.display(displayLoc2, 0, 66 / 255D, 170 / 255D, 244 / 255D, 1);
+			ParticleEffect.SPELL_MOB.display(displayLoc, 0, 66 / 255D, 170 / 255D, 244 / 255D, 1);
 		}
 	}
 	
@@ -270,10 +271,10 @@ public class Corrupt extends WaterAbility implements AddonAbility {
 			double x2 = Math.cos(Math.toRadians(angle2)) * distanceFromPlayer;
 			double z2 = Math.sin(Math.toRadians(angle2)) * distanceFromPlayer;
 			Location displayLoc2 = target.getLocation().clone().add(x2, height, z2);
-			GeneralMethods.displayColoredParticle(displayLoc2, "b02cc1", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc, "b02cc1", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc2, "893ac9", 0, 0, 0);
-			GeneralMethods.displayColoredParticle(displayLoc, "893ac9", 0, 0, 0);
+			GeneralMethods.displayColoredParticle("b02cc1", displayLoc2);
+			GeneralMethods.displayColoredParticle("b02cc1", displayLoc);
+			GeneralMethods.displayColoredParticle("893ac9", displayLoc2);
+			GeneralMethods.displayColoredParticle("893ac9", displayLoc);
 		}
 	}
 
