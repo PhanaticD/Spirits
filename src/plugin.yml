@@ -5,3 +5,43 @@ api-version: 1.13
 depend: [ProjectKorra]
 main: me.xnuminousx.spirits.Main
 description: A ProjectKorra extension that allows your players to be Spirits!
+
+permissions:
+  bending.allspirits:
+    default: op
+    description: Access to all spirit abilities.
+    children:
+      bending.spirit: true
+      bending.lightspirit: true
+      bending.darkspirit: true
+  bending.spirit:
+    default: op
+    description: Grants access to all spirit abilities.
+    children:
+      bending.command.add.spirit: true
+      bending.command.choose.spirit: true
+      bending.ability.agility: true
+      bending.ability.possess: true
+      bending.ability.vanish: true
+      bending.ability.phase: true
+      bending.ability.weightlessness: true
+  bending.lightspirit:
+    default: op
+    description: Grants access to all light spirit abilities.
+    children:
+      bending.command.add.lightspirit: true
+      bending.command.choose.lightspirit: true
+      bending.ability.alleviate: true
+      bending.ability.shelter: true
+      bending.ability.orb: true
+      bending.ability.rejuvenate: true
+  bending.darkspirit:
+    default: op
+    description: Grants access to all dark spirit abilities.
+    children:
+      bending.command.add.darkspirit: true
+      bending.command.choose.darkspirit: true
+      bending.ability.intoxicate: true
+      bending.ability.shackle: true
+      bending.ability.strike: true
+      bending.ability.infest: true
