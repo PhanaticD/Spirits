@@ -64,7 +64,6 @@ public class Phase extends SpiritAbility implements AddonAbility, ComboAbility {
 	@Override
 	public void progress() {
 		if (player.isDead() || !player.isOnline() || (player.getWorld() != playerWorld) || GeneralMethods.isRegionProtectedFromBuild(this, origin)) {
-			resetGameMode();
 			remove();
 			return;
 		}
@@ -79,13 +78,11 @@ public class Phase extends SpiritAbility implements AddonAbility, ComboAbility {
 		}
 		if (System.currentTimeMillis() > time + duration || origin.distanceSquared(player.getLocation()) > range * range) {
 			playEffects();
-			resetGameMode();
 			remove();
 			return;
 		}
 		if (player.isSneaking() && isPhased) {
 			playEffects();
-			resetGameMode();
 			remove();
 			return;
 		}
@@ -99,10 +96,6 @@ public class Phase extends SpiritAbility implements AddonAbility, ComboAbility {
 	public void resetGameMode() {
 		player.setGameMode(originGM);
 		isPhased = false;
-		bPlayer.addCooldown(this);
-		if (applyVanishCD) {
-			bPlayer.addCooldown("Vanish", vanishCD);
-		}
 	}
 	
 	public void playEffects() {
@@ -125,6 +118,15 @@ public class Phase extends SpiritAbility implements AddonAbility, ComboAbility {
 		combo.add(new AbilityInformation("Possess", ClickType.SHIFT_UP));
 		combo.add(new AbilityInformation("Vanish", ClickType.LEFT_CLICK));
 		return combo;
+	}
+	@Override
+	public void remove() {
+		resetGameMode();
+		bPlayer.addCooldown(this);
+		if (applyVanishCD) {
+			bPlayer.addCooldown("Vanish", vanishCD);
+		}
+		super.remove();
 	}
 
 	@Override
