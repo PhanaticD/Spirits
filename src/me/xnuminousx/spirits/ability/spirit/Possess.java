@@ -116,6 +116,10 @@ public class Possess extends SpiritAbility implements AddonAbility {
 				remove();
 				return;
 			} else {
+				if (target.isDead()) {
+					remove();
+					return;
+				}
 				this.possess(target, player.getLocation());
 			}
 		}
