@@ -103,7 +103,7 @@ public class Possess extends SpiritAbility implements AddonAbility {
 			}
 		} else {
 			progress = false;
-			entityCheck = target.getLocation();
+			entityCheck = target.getLocation().clone();
 			if (target instanceof Player) {
 				Player tPlayer = (Player)target;
 				if (tPlayer.isFlying()) {

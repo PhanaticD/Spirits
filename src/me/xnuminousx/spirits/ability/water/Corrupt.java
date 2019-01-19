@@ -84,6 +84,8 @@ public class Corrupt extends WaterAbility implements AddonAbility {
 	@Override
 	public void remove() {
 		super.remove();
+
+		mh.reset();
 		
 		if (target != null) {
 			heldEntities.remove(target.getEntityId());
@@ -204,7 +206,6 @@ public class Corrupt extends WaterAbility implements AddonAbility {
 			target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 300, 2));
 			ParticleEffect.SPELL_WITCH.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.1F);
 		}
-		mh.reset();
 	}
 	
 	public void paralyze(LivingEntity entity) {

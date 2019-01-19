@@ -3,9 +3,11 @@ package me.xnuminousx.spirits.listeners;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -25,18 +27,28 @@ import me.xnuminousx.spirits.ability.spirit.Soar;
 import me.xnuminousx.spirits.ability.spirit.Vanish;
 import me.xnuminousx.spirits.ability.water.Corrupt;
 import me.xnuminousx.spirits.ability.water.Purify;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class AbilityListener implements Listener {
 	
 	private boolean isPossessing;
 
 	@EventHandler
-	public void onSwing(PlayerAnimationEvent event) {
+	public void onSwing(PlayerInteractEvent event) {
+		if (event.getHand() != EquipmentSlot.HAND) {
+			return;
+		}
+		if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_AIR) {
+			return;
+		}
+		if (event.getAction() == Action.LEFT_CLICK_BLOCK && event.isCancelled()){
+			return;
+		}
 
 		Player player = event.getPlayer();
 		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 
-		if (event.isCancelled() || bPlayer == null) {
+		if (bPlayer == null) {
 			return;
 
 		} else if (bPlayer.getBoundAbilityName().equalsIgnoreCase(null)) {

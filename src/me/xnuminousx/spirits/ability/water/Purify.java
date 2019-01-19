@@ -83,6 +83,8 @@ public class Purify extends WaterAbility implements AddonAbility {
 	public void remove() {
 		super.remove();
 
+		mh.reset();
+
 		if (target != null) {
 			heldEntities.remove(target.getEntityId());
 		}
@@ -204,7 +206,6 @@ public class Purify extends WaterAbility implements AddonAbility {
 			target.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 300, 2));
 			ParticleEffect.FIREWORKS_SPARK.display(target.getLocation(), 3, (float) Math.random(), (float) Math.random(), (float) Math.random(), 0.1F);
 		}
-		mh.reset();
 	}
 
 	public void paralyze(LivingEntity entity) {

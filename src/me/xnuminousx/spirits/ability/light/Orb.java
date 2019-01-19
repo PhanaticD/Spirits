@@ -171,7 +171,7 @@ public class Orb extends LightAbility implements AddonAbility {
 	}
 	
 	private boolean hasOrb() {
-    	if (bPlayer.getBoundAbility().equals(CoreAbility.getAbility(Orb.class))) {
+    	if (bPlayer.getBoundAbilityName().equals(this.getName())) {
     		return true;
     	} else {
     		return false;
