@@ -2,6 +2,7 @@ package me.xnuminousx.spirits.ability.spirit;
 
 import java.util.Random;
 
+import com.projectkorra.projectkorra.command.Commands;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -102,6 +103,10 @@ public class Possess extends SpiritAbility implements AddonAbility {
 				}
 			}
 		} else {
+			if (GeneralMethods.isRegionProtectedFromBuild(this, target.getLocation()) || ((target instanceof Player) && Commands.invincible.contains(((Player) target).getName()))) {
+				remove();
+				return;
+			}
 			progress = false;
 			entityCheck = target.getLocation().clone();
 			if (target instanceof Player) {

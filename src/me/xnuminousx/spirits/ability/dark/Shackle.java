@@ -1,5 +1,6 @@
 package me.xnuminousx.spirits.ability.dark;
 
+import com.projectkorra.projectkorra.command.Commands;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -86,6 +87,10 @@ public class Shackle extends DarkAbility implements AddonAbility {
 			}
 		} else {
 			if (target.isDead() || target.getWorld() != player.getWorld()) {
+				remove();
+				return;
+			}
+			if (GeneralMethods.isRegionProtectedFromBuild(this, target.getLocation()) || ((target instanceof Player) && Commands.invincible.contains(((Player) target).getName()))) {
 				remove();
 				return;
 			}
