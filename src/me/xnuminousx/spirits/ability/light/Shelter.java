@@ -90,6 +90,8 @@ public class Shelter extends LightAbility implements AddonAbility {
 		this.direction = player.getLocation().getDirection();
 		this.progress = true;
 		this.isDamaged = false;
+
+		ProjectKorra.getCollisionInitializer().addLargeAbility(this);
 	}
 
 	@Override
@@ -126,7 +128,6 @@ public class Shelter extends LightAbility implements AddonAbility {
 			return;
 		} else {
 			rotateShield(player.getLocation(), 96, selfShield);
-			blockMove();
 			for (Entity target : GeneralMethods.getEntitiesAroundPoint(player.getLocation(), selfShield)) {
 				if (target instanceof LivingEntity && !target.getUniqueId().equals(player.getUniqueId())) {
 					if (GeneralMethods.isRegionProtectedFromBuild(this, target.getLocation()) || ((target instanceof Player) && Commands.invincible.contains(((Player) target).getName()))) {
@@ -170,7 +171,6 @@ public class Shelter extends LightAbility implements AddonAbility {
 							target2.setVelocity(vec);
 						}
 					}
-					blockMove();
 					rotateShield(location, 100, shieldSize);
 					shieldLocation = location;
 					
@@ -213,22 +213,6 @@ public class Shelter extends LightAbility implements AddonAbility {
 			location.add(x, 0.1F, z);
 			ParticleEffect.SPELL_INSTANT.display(location, 1, 0, 0, 0, 0);
 			location.subtract(x, 0.1F, z);
-		}
-	}
-	
-	private static void blockMove() {
-		CoreAbility fireBlast = CoreAbility.getAbility(FireBlast.class);
-		CoreAbility earthBlast = CoreAbility.getAbility(EarthBlast.class);
-		CoreAbility waterManip = CoreAbility.getAbility(WaterManipulation.class);
-		CoreAbility airSwipe = CoreAbility.getAbility(AirSwipe.class);
-		CoreAbility fireBlastCharged = CoreAbility.getAbility(FireBlastCharged.class);
-		
-		CoreAbility shelter = CoreAbility.getAbility(Shelter.class);
-		
-		CoreAbility[] smallAbilities = { airSwipe, earthBlast, waterManip, fireBlast, fireBlastCharged };
-		
-		for (CoreAbility smallAbil : smallAbilities) {
-			ProjectKorra.getCollisionManager().addCollision(new Collision(shelter, smallAbil, false, true));
 		}
 	}
 
