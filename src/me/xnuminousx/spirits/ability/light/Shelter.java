@@ -90,8 +90,6 @@ public class Shelter extends LightAbility implements AddonAbility {
 		this.direction = player.getLocation().getDirection();
 		this.progress = true;
 		this.isDamaged = false;
-
-		ProjectKorra.getCollisionInitializer().addLargeAbility(this);
 	}
 
 	@Override
@@ -284,7 +282,7 @@ public class Shelter extends LightAbility implements AddonAbility {
 
 	@Override
 	public void load() {
-
+		ProjectKorra.getCollisionInitializer().addLargeAbility(this);
 	}
 
 	@Override
