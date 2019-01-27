@@ -67,7 +67,7 @@ public class Possess extends SpiritAbility implements AddonAbility {
 
 	@Override
 	public void progress() {
-		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, player.getLocation()) || origin.distanceSquared(entityCheck) > range * range) {
+		if (player.isDead() || !player.isOnline() || GeneralMethods.isRegionProtectedFromBuild(this, player.getLocation()) || !origin.getWorld().equals(entityCheck.getWorld()) || origin.distanceSquared(entityCheck) > range * range) {
 			remove();
 			return;
 		}
