@@ -125,7 +125,7 @@ public class Infest extends DarkAbility implements AddonAbility, ComboAbility {
 				if (bEntity.hasElement(Element.getElement("DarkSpirit"))) {
 					if (healDarkSpirits) {
 						LivingEntity le = (LivingEntity)entity;
-						le.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 120, 1));
+						le.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 120, 0));
 						ParticleEffect.HEART.display(entity.getLocation().add(0, 2, 0), 1);
 					}
 				} else {
