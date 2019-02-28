@@ -165,7 +165,7 @@ public class Shackle extends DarkAbility implements AddonAbility {
 	@Override
 	public String getDescription() {
 		return Methods.setSpiritDescription(SpiritType.DARK, "Defense") + 
-				Main.plugin.getConfig().getString("Langauge.Abilities.DarkSpirit.Shackle.Description");
+				Main.plugin.getConfig().getString("Language.Abilities.DarkSpirit.Shackle.Description");
 	}
 	
 	@Override
